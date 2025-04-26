@@ -1,20 +1,8 @@
 const http = require("http");
-const { json } = require("stream/consumers");
 
-const users = [
-  {
-    userid: 1,
-    name: "sendil",
-  },
-  {
-    userid: 2,
-    name: "sudha",
-  },
-  {
-    userid: 3,
-    name: "sugan",
-  },
-];
+const users = require("./users.json");
+
+console.log("users", users);
 
 const server = http.createServer((req, res) => {
   if (req.url === "/users") {
