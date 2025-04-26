@@ -1,16 +1,34 @@
 const http = require("http");
+const fs = require("fs");
+const path = require("path");
 
 const users = require("./users.json");
 
-console.log("users", users);
+const filePath = path.join(__dirname, "users.json");
 
-const server = http.createServer((req, res) => {
+async function addusers() {
+  try {
+    const newLength = users.length + 1;
+    const newUsers = users.push({ userid: newLength });
+    fs.writeFile(filePath, JSON.stringify(newUsers, null, 2));
+  } catch (err) {
+    console.log("error", err);
+  }
+}
+
+const server = http.createServer(async (req, res) => {
   if (req.url === "/users") {
     res.writeHead(200, { "content-type": "application/json" });
     res.end(JSON.stringify(users));
-  } else if (req.url === "/users") {
-    res.writeHead(200, { "content-type": "text/plain" });
-    res.end("Welcome to simple node server");
+  } else if (req.url === "/add") {
+    try {
+      await addusers();
+      res.writeHead(201, { "content-type": "text/plain" });
+      res.end("Added random data");
+    } catch (err) {
+      res.writeHead(200, { "content-type": "text/plain" });
+      res.end("Failed to save data");
+    }
   } else {
     res.writeHead(404, { "content-type": "text/plain" });
     res.end("Page not found");
