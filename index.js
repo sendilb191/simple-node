@@ -36,6 +36,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 const PORT = 3000;
+
 server.listen(PORT, () => {
   console.log(`server running in local host ${PORT} port `);
 });
